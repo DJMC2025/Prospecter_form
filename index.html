@@ -2,126 +2,93 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
 <head>
-<meta charset="utf-8"/>
-<title>Printer TCO Calculator</title>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-<style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Printer TCO Calculator</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+  <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #fff;
-      color: #000;
-      max-width: 600px;
-      margin: 40px auto;
+      background-color: #f4f4f4;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
       padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-    label {
-      display: block;
-      margin-top: 10px;
-    }
-    input, select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 4px;
-      border: 1px solid #ccc;
-    }
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    .result {
-      margin-top: 20px;
-      font-weight: bold;
-    }
-    .email-draft {
-      margin-top: 20px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      background-color: #f9f9f9;
-    }
+
     .navbar {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       background-color: #007bff;
       padding: 10px;
       color: #fff;
     }
+
     .navbar a {
       color: #fff;
       text-decoration: none;
-      padding: 0 10px;
+      padding: 10px;
+      flex: 1 1 100%;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #ff9800;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    button:hover {
+      background-color: #e68900;
+    }
+
+    .result, .email-draft {
+      margin-top: 20px;
+    }
+
+    @media (min-width: 600px) {
+      .navbar a {
+        flex: 1;
+        text-align: left;
+      }
+
+      button {
+        width: auto;
+      }
     }
   </style>
-
-<style>
-    body {
-        font-family: 'Courier New', Courier, monospace;
-        background-color: #f4f4f4;
-        color: #333;
-        margin: 0;
-        padding: 0;
-    }
-    .container {
-        max-width: 800px;
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #fff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    h1, h2, h3 {
-        font-family: 'Courier New', Courier, monospace;
-        color: #333;
-    }
-    label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
-    input, select, textarea {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-    button {
-        background-color: #ff9800;
-        color: #fff;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-family: 'Courier New', Courier, monospace;
-    }
-    button:hover {
-        background-color: #e68900;
-    }
-    .retro-header {
-        background-color: #ff9800;
-        color: #fff;
-        padding: 10px;
-        text-align: center;
-        border-radius: 4px 4px 0 0;
-    }
-    .retro-footer {
-        background-color: #ff9800;
-        color: #fff;
-        padding: 10px;
-        text-align: center;
-        border-radius: 0 0 4px 4px;
-    }
-</style>
 </head>
+
 <body>
 <div class="navbar">
 <a href="#"><i class="fas fa-calculator"></i> Printer TCO Calculator</a>
