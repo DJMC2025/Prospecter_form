@@ -102,6 +102,9 @@
 <label>Contact Name:
     <input id="contactName" type="text"/>
 </label>
+  <label>Location:
+    <input id="location" type="text"/>
+</label>
 <label>Contact Email Address:
     <input id="contactEmail" type="email"/>
 </label>
@@ -197,6 +200,7 @@
     function generateEmailDraft(totalCost) {
       const companyName = document.getElementById('companyName').value;
       const contactName = document.getElementById('contactName').value;
+      const location = document.getElementById('location').value;
       const contactEmail = document.getElementById('contactEmail').value;
       const contactNumber = document.getElementById('contactNumber').value;
       const monoPages = document.getElementById('monoPages').value;
@@ -246,6 +250,7 @@ Best regards,
     function submitForm() {
       const companyName = document.getElementById('companyName').value;
       const contactName = document.getElementById('contactName').value;
+      const location = document.getElementById('location').value;
       const contactEmail = document.getElementById('contactEmail').value;
       const contactNumber = document.getElementById('contactNumber').value;
       const a3Printers = document.getElementById('a3Printers').value;
@@ -261,8 +266,8 @@ Best regards,
       const colourCost = document.getElementById('colourCost').value;
       const otherCosts = document.getElementById('otherCosts').value;
 
-      const csvContent = `Company Name,Contact Name,Contact Email,Contact Number,Number of A3 Printers,Makes and Models of A3 Printers,Number of A4 Printers,Makes and Models of A4 Printers,Lease Type,Lease End Date,Lease Cost per Quarter,Mono Pages Printed per Quarter,Cost per Mono Page,Colour Pages Printed per Quarter,Cost per Colour Page,Other Costs per Quarter
-${companyName},${contactName},${contactEmail},${contactNumber},${a3Printers},${a3PrinterModels},${a4Printers},${a4PrinterModels},${leaseType},${leaseEndDate},${leaseCost},${monoPages},${monoCost},${colourPages},${colourCost},${otherCosts}
+      const csvContent = `Company Name,Contact Name,Location,Contact Email,Contact Number,Number of A3 Printers,Makes and Models of A3 Printers,Number of A4 Printers,Makes and Models of A4 Printers,Lease Type,Lease End Date,Lease Cost per Quarter,Mono Pages Printed per Quarter,Cost per Mono Page,Colour Pages Printed per Quarter,Cost per Colour Page,Other Costs per Quarter
+${companyName},${contactName},${location},${contactEmail},${contactNumber},${a3Printers},${a3PrinterModels},${a4Printers},${a4PrinterModels},${leaseType},${leaseEndDate},${leaseCost},${monoPages},${monoCost},${colourPages},${colourCost},${otherCosts}
 `;
 
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -273,6 +278,7 @@ ${companyName},${contactName},${contactEmail},${contactNumber},${a3Printers},${a
 
       document.getElementById('companyName').value = '';
       document.getElementById('contactName').value = '';
+      document.getElementById('location').value = '';
       document.getElementById('contactEmail').value = '';
       document.getElementById('contactNumber').value = '';
       document.getElementById('a3Printers').value = '';
