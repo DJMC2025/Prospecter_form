@@ -55,33 +55,35 @@
       box-sizing: border-box;
     }
 
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
     button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
       background-color: #ff9800;
       color: #fff;
-      padding: 12px 20px;
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      width: 100%;
-      margin-bottom: 10px;
     }
 
     button:hover {
       background-color: #e68900;
     }
 
-    .result, .email-draft {
+    .result {
       margin-top: 20px;
     }
 
     @media (min-width: 600px) {
-      .navbar a {
-        flex: 1;
-        text-align: left;
-      }
-
-      button {
-        width: auto;
+      .button-container {
+        flex-direction: column;
       }
     }
   </style>
@@ -101,12 +103,13 @@
 <label>Location: <input id="location" type="text"></label>
 <label>Contact Email Address: <input id="contactEmail" type="email"></label>
 <label>Contact Number: <input id="contactNumber" type="tel"></label>
-<label>Number of A3 Printers: <input id="a3Printers" onchange="togglePrinterFields()" type="number"></label>
+
+<label>Number of A3 Printers: <input id="a3Printers" onchange="togglePrinterFields()" type="number" min="0"></label>
 <div id="a3PrinterDetails" style="display: none;">
   <label>Makes and Models of A3 Printers: <input id="a3PrinterModels" type="text"></label>
 </div>
 
-<label>Number of A4 Printers: <input id="a4Printers" onchange="togglePrinterFields()" type="number"></label>
+<label>Number of A4 Printers: <input id="a4Printers" onchange="togglePrinterFields()" type="number" min="0"></label>
 <div id="a4PrinterDetails" style="display: none;">
   <label>Makes and Models of A4 Printers: <input id="a4PrinterModels" type="text"></label>
 </div>
@@ -130,47 +133,62 @@
 <label>Cost per Colour Page (£): <input id="colourCost" step="0.01" type="number"></label>
 <label>Other Costs per Quarter (£): <input id="otherCosts" step="0.01" type="number"></label>
 
-<button onclick="calculateTCO()">Calculate TCO</button>
-<button onclick="submitForm()">Submit</button>
-<button onclick="openEmailClient()">Send Info</button>
+<div class="button-container">
+  <button onclick="calculateTCO()">Calculate TCO</button>
+  <button onclick="submitForm()">Submit</button>
+  <button onclick="openEmailClient()">Send Info</button>
+</div>
 
 <div class="result" id="tcoResult"></div>
 
 <script>
-function openEmailClient() {
-    const companyName = document.getElementById('companyName').value;
-    const contactName = document.getElementById('contactName').value;
-    const location = document.getElementById('location').value;
-    const contactEmail = document.getElementById('contactEmail').value;
-    const contactNumber = document.getElementById('contactNumber').value;
-    const monoPages = document.getElementById('monoPages').value;
-    const monoCost = document.getElementById('monoCost').value;
-    const colourPages = document.getElementById('colourPages').value;
-    const colourCost = document.getElementById('colourCost').value;
-    const leaseCost = document.getElementById('leaseCost').value;
-    const otherCosts = document.getElementById('otherCosts').value;
+function togglePrinterFields() {
+    const a3Printers = document.getElementById('a3Printers').value;
+    const a4Printers = document.getElementById('a4Printers').value;
 
-    const subject = encodeURIComponent(`TCO Summary for ${companyName}`);
-    const body = encodeURIComponent(`
-Company Name: ${companyName}
-Contact Name: ${contactName}
-Location: ${location}
-Contact Email: ${contactEmail}
-Contact Number: ${contactNumber}
+    document.getElementById('a3PrinterDetails').style.display = a3Printers && a3Printers > 0 ? 'block' : 'none';
+    document.getElementById('a4PrinterDetails').style.display = a4Printers && a4Printers > 0 ? 'block' : 'none';
+}
 
-Mono Pages Printed per Quarter: ${monoPages}
-Cost per Mono Page: £${monoCost}
+function calculateTCO() {
+    const monoPages = parseFloat(document.getElementById('monoPages').value) || 0;
+    const monoCost = parseFloat(document.getElementById('monoCost').value) || 0;
+    const colourPages = parseFloat(document.getElementById('colourPages').value) || 0;
+    const colourCost = parseFloat(document.getElementById('colourCost').value) || 0;
+    const leaseType = document.getElementById('leaseType').value;
+    const leaseCost = (leaseType === 'Leased' || leaseType === 'Both') ? parseFloat(document.getElementById('leaseCost').value) || 0 : 0;
+    const otherCosts = parseFloat(document.getElementById('otherCosts').value) || 0;
 
-Colour Pages Printed per Quarter: ${colourPages}
-Cost per Colour Page: £${colourCost}
+    const totalCost = (monoPages * monoCost) + (colourPages * colourCost) + leaseCost + otherCosts;
 
-Lease Cost per Quarter: £${leaseCost}
-Other Costs per Quarter: £${otherCosts}
+    document.getElementById('tcoResult').innerText = `Total Cost of Ownership per Quarter: £${totalCost.toFixed(2)}`;
+}
 
-Best regards,
-`);
+function submitForm() {
+    const formData = {
+        companyName: document.getElementById('companyName').value,
+        contactName: document.getElementById('contactName').value,
+        location: document.getElementById('location').value,
+        contactEmail: document.getElementById('contactEmail').value,
+        contactNumber: document.getElementById('contactNumber').value
+    };
 
-    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    fetch("https://script.google.com/macros/s/AKfycbzs1sZhZXXmGao6XzKon7bEdwwPGh_5YLlPy1OjKdNBsWVAkvZF2w81GahxARtyKYiR/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.text())
+    .then(data => alert("Form submitted successfully!"))
+    .catch(error => alert("Error submitting form: " + error));
+}
+</script>
+<script>
+function toggleLeaseFields() {
+    const leaseType = document.getElementById('leaseType').value;
+    const leaseFields = document.getElementById('leaseFields');
+
+    leaseFields.style.display = (leaseType === 'Leased' || leaseType === 'Both') ? 'block' : 'none';
 }
 </script>
 
