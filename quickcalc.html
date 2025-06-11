@@ -111,46 +111,4 @@
       <option value="Leased">Leased</option>
       <option value="Both">Both</option>
     </select>
-  </label>
-
-  <div id="leaseFields" style="display: none;">
-    <label>Lease End Date: <input id="leaseEndDate" name="leaseEndDate" type="date"></label>
-    <label>Lease Cost per Quarter (£): <input id="leaseCost" name="leaseCost" step="0.01" type="number"></label>
-  </div>
-
-  <label>Mono Pages Printed per Quarter: <input id="monoPages" name="monoPages" type="number"></label>
-  <label>Cost per Mono Page (£): <input id="monoCost" name="monoCost" step="0.01" type="number"></label>
-  <label>Colour Pages Printed per Quarter: <input id="colourPages" name="colourPages" type="number"></label>
-  <label>Cost per Colour Page (£): <input id="colourCost" name="colourCost" step="0.01" type="number"></label>
-  <label>Other Costs per Quarter (£): <input id="otherCosts" name="otherCosts" step="0.01" type="number"></label>
-
-  <div class="button-container">
-    <button onclick="calculateTCO()">Calculate TCO</button>
-    <button onclick="submitForm()">Submit</button>
-    <button type="button" onclick="sendEmail()">Send Info</button>
-  </div>
-</form>
-
-<div class="result" id="tcoResult"></div>
-
-<script>
-function sendEmail() {
-    var form = document.getElementById("tcoForm");
-    var formData = new FormData(form);
-    var emailBody = "Hello,\n\nHere is the TCO calculation:\n\n";
-
-    formData.forEach((value, key) => {
-        emailBody += `${key}: ${value}\n`;
-    });
-
-    emailBody += "\nBest regards";
-
-    var subject = encodeURIComponent("TCO Calculation Result");
-    var body = encodeURIComponent(emailBody);
-    
-    window.location.href = `mailto:?subject=${subject}&body=${body}`;
-}
-</script>
-
-</body>
-</html>
+  </label
