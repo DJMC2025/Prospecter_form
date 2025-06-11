@@ -149,7 +149,7 @@ function sendEmail() {
     });
 
     emailBody += "\nBest regards";
-    var subject = encodeURIComponent("TCO Calculation Result");
+    var subject = encodeURIComponent(`TCO Calculation - ${companyName}`);
     var body = encodeURIComponent(emailBody);
     
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
