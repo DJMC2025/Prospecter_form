@@ -14,7 +14,6 @@
       margin: 0;
       padding: 0;
     }
-
     .container {
       max-width: 800px;
       margin: 20px auto;
@@ -22,7 +21,6 @@
       background-color: #fff;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-
     .navbar {
       display: flex;
       flex-wrap: wrap;
@@ -31,7 +29,6 @@
       padding: 10px;
       color: #fff;
     }
-
     .navbar a {
       color: #fff;
       text-decoration: none;
@@ -39,13 +36,11 @@
       flex: 1 1 100%;
       text-align: center;
     }
-
     label {
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
     }
-
     input, select, textarea {
       width: 100%;
       padding: 12px;
@@ -54,14 +49,12 @@
       border-radius: 4px;
       box-sizing: border-box;
     }
-
     .button-container {
       display: flex;
       flex-direction: column;
       gap: 10px;
       width: 100%;
     }
-
     button {
       width: 100%;
       padding: 12px;
@@ -72,15 +65,12 @@
       border-radius: 4px;
       cursor: pointer;
     }
-
     button:hover {
       background-color: #e68900;
     }
-
     .result {
       margin-top: 20px;
     }
-
     @media (min-width: 600px) {
       .button-container {
         flex-direction: column;
@@ -98,97 +88,76 @@
 
 <h2><i class="fas fa-calculator"></i> Printer TCO Calculator</h2>
 
-<label>Company Name: <input id="companyName" type="text"></label>
-<label>Contact Name: <input id="contactName" type="text"></label>
-<label>Location: <input id="location" type="text"></label>
-<label>Contact Email Address: <input id="contactEmail" type="email"></label>
-<label>Contact Number: <input id="contactNumber" type="tel"></label>
+<form id="tcoForm">
+  <label>Company Name: <input id="companyName" name="companyName" type="text"></label>
+  <label>Contact Name: <input id="contactName" name="contactName" type="text"></label>
+  <label>Location: <input id="location" name="location" type="text"></label>
+  <label>Contact Email Address: <input id="contactEmail" name="contactEmail" type="email"></label>
+  <label>Contact Number: <input id="contactNumber" name="contactNumber" type="tel"></label>
 
-<label>Number of A3 Printers: <input id="a3Printers" onchange="togglePrinterFields()" type="number" min="0"></label>
-<div id="a3PrinterDetails" style="display: none;">
-  <label>Makes and Models of A3 Printers: <input id="a3PrinterModels" type="text"></label>
-</div>
+  <label>Number of A3 Printers: <input id="a3Printers" name="a3Printers" type="number" min="0"></label>
+  <label>Makes and Models of A3 Printers: <input id="a3PrinterModels" name="a3PrinterModels" type="text"></label>
 
-<label>Number of A4 Printers: <input id="a4Printers" onchange="togglePrinterFields()" type="number" min="0"></label>
-<div id="a4PrinterDetails" style="display: none;">
-  <label>Makes and Models of A4 Printers: <input id="a4PrinterModels" type="text"></label>
-</div>
+  <label>Number of A4 Printers: <input id="a4Printers" name="a4Printers" type="number" min="0"></label>
+  <label>Makes and Models of A4 Printers: <input id="a4PrinterModels" name="a4PrinterModels" type="text"></label>
 
-<label>Are the printers Leased or Purchased?
-  <select id="leaseType" onchange="toggleLeaseFields()">
-    <option value="Purchased">Purchased</option>
-    <option value="Leased">Leased</option>
-    <option value="Both">Both</option>
-  </select>
-</label>
+  <label>Are the printers Leased or Purchased?
+    <select id="leaseType" name="leaseType">
+      <option value="Purchased">Purchased</option>
+      <option value="Leased">Leased</option>
+      <option value="Both">Both</option>
+    </select>
+  </label>
 
-<div id="leaseFields" style="display: none;">
-  <label>Lease End Date: <input id="leaseEndDate" type="date"></label>
-  <label>Lease Cost per Quarter (£): <input id="leaseCost" step="0.01" type="number"></label>
-</div>
+  <label>Lease End Date: <input id="leaseEndDate" name="leaseEndDate" type="date"></label>
+  <label>Lease Cost per Quarter (£): <input id="leaseCost" name="leaseCost" step="0.01" type="number"></label>
 
-<label>Mono Pages Printed per Quarter: <input id="monoPages" type="number"></label>
-<label>Cost per Mono Page (£): <input id="monoCost" step="0.01" type="number"></label>
-<label>Colour Pages Printed per Quarter: <input id="colourPages" type="number"></label>
-<label>Cost per Colour Page (£): <input id="colourCost" step="0.01" type="number"></label>
-<label>Other Costs per Quarter (£): <input id="otherCosts" step="0.01" type="number"></label>
+  <label>Mono Pages Printed per Quarter: <input id="monoPages" name="monoPages" type="number"></label>
+  <label>Cost per Mono Page (£): <input id="monoCost" name="monoCost" step="0.01" type="number"></label>
+  <label>Colour Pages Printed per Quarter: <input id="colourPages" name="colourPages" type="number"></label>
+  <label>Cost per Colour Page (£): <input id="colourCost" name="colourCost" step="0.01" type="number"></label>
+  <label>Other Costs per Quarter (£): <input id="otherCosts" name="otherCosts" step="0.01" type="number"></label>
 
-<div class="button-container">
-  <button onclick="calculateTCO()">Calculate TCO</button>
-  <button onclick="submitForm()">Submit</button>
-  <button onclick="openEmailClient()">Send Info</button>
-</div>
+  <div class="button-container">
+    <button type="button" onclick="calculateTCO()">Calculate TCO</button>
+    <button type="button" onclick="sendEmail()">Send Info</button>
+    <button type="button" onclick="resetForm()">Reset Form</button>
+  </div>
+</form>
 
 <div class="result" id="tcoResult"></div>
 
 <script>
-function togglePrinterFields() {
-    const a3Printers = document.getElementById('a3Printers').value;
-    const a4Printers = document.getElementById('a4Printers').value;
-
-    document.getElementById('a3PrinterDetails').style.display = a3Printers && a3Printers > 0 ? 'block' : 'none';
-    document.getElementById('a4PrinterDetails').style.display = a4Printers && a4Printers > 0 ? 'block' : 'none';
-}
-
 function calculateTCO() {
     const monoPages = parseFloat(document.getElementById('monoPages').value) || 0;
     const monoCost = parseFloat(document.getElementById('monoCost').value) || 0;
     const colourPages = parseFloat(document.getElementById('colourPages').value) || 0;
     const colourCost = parseFloat(document.getElementById('colourCost').value) || 0;
-    const leaseType = document.getElementById('leaseType').value;
-    const leaseCost = (leaseType === 'Leased' || leaseType === 'Both') ? parseFloat(document.getElementById('leaseCost').value) || 0 : 0;
+    const leaseCost = parseFloat(document.getElementById('leaseCost').value) || 0;
     const otherCosts = parseFloat(document.getElementById('otherCosts').value) || 0;
 
     const totalCost = (monoPages * monoCost) + (colourPages * colourCost) + leaseCost + otherCosts;
-
     document.getElementById('tcoResult').innerText = `Total Cost of Ownership per Quarter: £${totalCost.toFixed(2)}`;
 }
 
-function submitForm() {
-    const formData = {
-        companyName: document.getElementById('companyName').value,
-        contactName: document.getElementById('contactName').value,
-        location: document.getElementById('location').value,
-        contactEmail: document.getElementById('contactEmail').value,
-        contactNumber: document.getElementById('contactNumber').value
-    };
+function sendEmail() {
+    var form = document.getElementById("tcoForm");
+    var formData = new FormData(form);
+    var companyName = document.getElementById("companyName").value || "TCO Calculation";
+    var subject = encodeURIComponent(`TCO Calculation - ${companyName}`);
+    
+    var emailBody = "Hello,\n\nHere is the TCO calculation:\n\n";
+    formData.forEach((value, key) => {
+        emailBody += `${key}: ${value}\n`;
+    });
 
-    fetch("https://script.google.com/macros/s/AKfycbzs1sZhZXXmGao6XzKon7bEdwwPGh_5YLlPy1OjKdNBsWVAkvZF2w81GahxARtyKYiR/exec", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-    })
-    .then(response => response.text())
-    .then(data => alert("Form submitted successfully!"))
-    .catch(error => alert("Error submitting form: " + error));
+    emailBody += "\nBest regards";
+    var body = encodeURIComponent(emailBody);
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
 }
-</script>
-<script>
-function toggleLeaseFields() {
-    const leaseType = document.getElementById('leaseType').value;
-    const leaseFields = document.getElementById('leaseFields');
 
-    leaseFields.style.display = (leaseType === 'Leased' || leaseType === 'Both') ? 'block' : 'none';
+function resetForm() {
+    document.getElementById("tcoForm").reset();
 }
 </script>
 
