@@ -25,7 +25,7 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
-      background-color: #f1c40f;
+      background-color: #007bff;
       padding: 10px;
       color: #fff;
     }
@@ -118,9 +118,13 @@
   <label>Cost per Colour Page (£): <input id="colourCost" name="colourCost" step="0.01" type="number"></label>
   <label>Other Costs per Quarter (£): <input id="otherCosts" name="otherCosts" step="0.01" type="number"></label>
 
+  <!-- Hidden TCO Input for Email Submission -->
+  <input type="hidden" id="tcoValue" name="TCO Calculation">
+
   <div class="button-container">
     <button type="button" onclick="calculateTCO()">Calculate TCO</button>
     <button type="button" onclick="sendEmail()">Send Info</button>
+    <button type="button" onclick="resetForm()">Reset Form</button>
   </div>
 </form>
 
@@ -137,15 +141,17 @@ function calculateTCO() {
 
     const totalCost = (monoPages * monoCost) + (colourPages * colourCost) + leaseCost + otherCosts;
     document.getElementById('tcoResult').innerText = `Total Cost of Ownership per Quarter: £${totalCost.toFixed(2)}`;
+
+    // Store TCO calculation in hidden input for email submission
+    document.getElementById('tcoValue').value = totalCost.toFixed(2);
 }
 
 function sendEmail() {
     var form = document.getElementById("tcoForm");
     var formData = new FormData(form);
-
-    var companyName = document.getElementById("companyName").value || "TCO Calculation"; // Fallback text if empty
-    var subject = encodeURIComponent(`TCO Calculation - ${companyName}`);  
-
+    var companyName = document.getElementById("companyName").value || "TCO Calculation";
+    var subject = encodeURIComponent(`TCO Calculation - ${companyName}`);
+    
     var emailBody = "Hello,\n\nHere is the TCO calculation:\n\n";
     formData.forEach((value, key) => {
         emailBody += `${key}: ${value}\n`;
@@ -153,8 +159,11 @@ function sendEmail() {
 
     emailBody += "\nBest regards";
     var body = encodeURIComponent(emailBody);
-
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
+}
+
+function resetForm() {
+    document.getElementById("tcoForm").reset();
 }
 </script>
 
