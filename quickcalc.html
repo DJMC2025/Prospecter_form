@@ -142,16 +142,18 @@ function calculateTCO() {
 function sendEmail() {
     var form = document.getElementById("tcoForm");
     var formData = new FormData(form);
-    var emailBody = "Hello,\n\nHere is the TCO calculation:\n\n";
 
+    var companyName = document.getElementById("companyName").value || "TCO Calculation"; // Fallback text if empty
+    var subject = encodeURIComponent(`TCO Calculation - ${companyName}`);  
+
+    var emailBody = "Hello,\n\nHere is the TCO calculation:\n\n";
     formData.forEach((value, key) => {
         emailBody += `${key}: ${value}\n`;
     });
 
     emailBody += "\nBest regards";
-    var subject = encodeURIComponent(`TCO Calculation - ${companyName}`);
     var body = encodeURIComponent(emailBody);
-    
+
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
 }
 </script>
