@@ -43,14 +43,16 @@
       margin-bottom: 5px;
       font-weight: bold;
     }
-    input,
-    select {
+    input, select {
       width: 100%;
       padding: 12px;
       margin-bottom: 15px;
       border: 1px solid #ccc;
       border-radius: 4px;
       box-sizing: border-box;
+    }
+    input[readonly] {
+      background-color: #e9ecef;
     }
     .button-container {
       display: flex;
@@ -95,7 +97,12 @@
       <label>Contact Number: <input id="contactNumber" name="contactNumber" type="tel" /></label>
 
       <label>Card Payment Provider: <input id="paymentProvider" name="paymentProvider" type="text" /></label>
-      <label>Monthly CTO (£): <input id="monthlyCTO" name="monthlyCTO" step="0.01" type="number" /></label>
+      <label>Monthly CTO (£): <input id="monthlyCTO" name="monthlyCTO" step="0.01" type="number" onchange="updateAvgTransaction()" /></label>
+      <label>Monthly Transactions: <input id="monthlyTransactions" name="monthlyTransactions" type="number" min="0" onchange="updateAvgTransaction()" /></label>
+      <label>Average Transaction Value (£):
+        <input id="avgTransactionValue" name="avgTransactionValue" type="number" step="0.01" readonly />
+      </label>
+
       <label>Credit Card Rate (%): <input id="creditRate" name="creditRate" step="0.01" type="number" /></label>
       <label>Debit Card Rate (%): <input id="debitRate" name="debitRate" step="0.01" type="number" /></label>
 
@@ -112,8 +119,6 @@
 
       <label>Terminal Fee (£): <input id="terminalFee" name="terminalFee" step="0.01" type="number" /></label>
       <label>Number of Terminals: <input id="terminalCount" name="terminalCount" type="number" min="0" /></label>
-      <label>Monthly Transactions: <input id="monthlyTransactions" name="monthlyTransactions" type="number" min="0" /></label>
-      <label>Average Transaction Value (£): <input id="avgTransactionValue" name="avgTransactionValue" step="0.01" type="number" /></label>
       <label>Secure Fee (£): <input id="secureFee" name="secureFee" step="0.01" type="number" /></label>
       <label>Other Costs (£): <input id="otherCosts" name="otherCosts" step="0.01" type="number" /></label>
 
@@ -132,6 +137,18 @@
       const amexContainer = document.getElementById("amexRateContainer");
       const acceptsAmex = document.getElementById("acceptsAmex").value;
       amexContainer.style.display = acceptsAmex === "Yes" ? "block" : "none";
+    }
+
+    function updateAvgTransaction() {
+      const monthlyCTO = parseFloat(document.getElementById("monthlyCTO").value) || 0;
+      const monthlyTransactions = parseInt(document.getElementById("monthlyTransactions").value) || 0;
+      const avgField = document.getElementById("avgTransactionValue");
+
+      if (monthlyCTO > 0 && monthlyTransactions > 0) {
+        avgField.value = (monthlyCTO / monthlyTransactions).toFixed(2);
+      } else {
+        avgField.value = "";
+      }
     }
 
     function calculateProcessingFees() {
@@ -168,20 +185,4 @@
       const companyName = document.getElementById("companyName").value || "Processing Fee Submission";
       const subject = encodeURIComponent(`Processing Fee Info - ${companyName}`);
 
-      let emailBody = "Hello,\n\nHere is the payment processing information:\n\n";
-      formData.forEach((value, key) => {
-        emailBody += `${key}: ${value}\n`;
-      });
-      emailBody += "\nBest regards";
-      const body = encodeURIComponent(emailBody);
-
-      window.location.href = `mailto:?subject=${subject}&body=${body}`;
-    }
-
-    function resetForm() {
-      document.getElementById("tcoForm").reset();
-      document.getElementById("processingFeeResult").innerText = "";
-      document.getElementById("amexRateContainer").style.display = "none";
-    }
-  </script>
-</
+      let emailBody = "Hello,\n\n
