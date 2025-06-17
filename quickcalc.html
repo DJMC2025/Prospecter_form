@@ -125,6 +125,8 @@
       <div class="button-container">
         <button type="button" onclick="calculateProcessingFees()">Calculate Processing Fees</button>
         <button type="button" onclick="resetForm()">Reset Form</button>
+        <button type="button" onclick="emailToCloke()">Email to d.cloke@gmail.com</button>
+
       </div>
     </form>
 
@@ -177,6 +179,21 @@
       document.getElementById('processingFeeResult').innerText =
         `Estimated Monthly Processing Fees: £${totalProcessingCost.toFixed(2)}`;
     }
+function emailToCloke() {
+  const form = document.getElementById("tcoForm");
+  const formData = new FormData(form);
+  const companyName = document.getElementById("companyName").value || "Payment Info";
+  const subject = encodeURIComponent(`Payment Processing Info - ${companyName}`);
+
+  let emailBody = "Hello,\n\nHere is the submitted payment processor information:\n\n";
+  formData.forEach((value, key) => {
+    emailBody += `${key}: ${value}\n`;
+  });
+  emailBody += "\nBest regards";
+  const body = encodeURIComponent(emailBody);
+
+  window.location.href = `mailto:d.cloke@gmail.com?subject=${subject}&body=${body}`;
+}
 
     function resetForm() {
       document.getElementById("tcoForm").reset();
