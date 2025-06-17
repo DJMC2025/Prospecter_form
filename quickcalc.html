@@ -86,41 +86,25 @@
     <h2><i class="fas fa-credit-card"></i> Payment Processor Calculator</h2>
 
     <form id="tcoForm">
-      <label>Company Name:
-        <input id="companyName" name="companyName" type="text" />
-      </label>
-      <label>Contact Name:
-        <input id="contactName" name="contactName" type="text" />
-      </label>
-      <label>Location:
-        <input id="location" name="location" type="text" />
-      </label>
-      <label>Contact Email Address:
-        <input id="contactEmail" name="contactEmail" type="email" />
-      </label>
-      <label>Contact Number:
-        <input id="contactNumber" name="contactNumber" type="tel" />
-      </label>
+      <label>Company Name: <input id="companyName" name="companyName" type="text" /></label>
+      <label>Contact Name: <input id="contactName" name="contactName" type="text" /></label>
+      <label>Location: <input id="location" name="location" type="text" /></label>
+      <label>Contact Email Address: <input id="contactEmail" name="contactEmail" type="email" /></label>
+      <label>Contact Number: <input id="contactNumber" name="contactNumber" type="tel" /></label>
 
-      <label>Card Payment Provider:
-        <input id="paymentProvider" name="paymentProvider" type="text" />
-      </label>
-      <label>Monthly CTO (£):
+      <label>Card Payment Provider: <input id="paymentProvider" name="paymentProvider" type="text" /></label>
+      <label>Monthly CTO (£): 
         <input id="monthlyCTO" name="monthlyCTO" type="number" step="0.01" onchange="updateTransactionCount()" />
       </label>
-      <label>Average Transaction Value (£):
+      <label>Average Transaction Value (£): 
         <input id="avgTransactionValue" name="avgTransactionValue" type="number" step="0.01" onchange="updateTransactionCount()" />
       </label>
-      <label>Monthly Transactions (calculated):
+      <label>Monthly Transactions (calculated): 
         <input id="monthlyTransactions" name="monthlyTransactions" type="number" readonly />
       </label>
 
-      <label>Credit Card Rate (%):
-        <input id="creditRate" name="creditRate" type="number" step="0.01" />
-      </label>
-      <label>Debit Card Rate (%):
-        <input id="debitRate" name="debitRate" type="number" step="0.01" />
-      </label>
+      <label>Credit Card Rate (%): <input id="creditRate" name="creditRate" type="number" step="0.01" /></label>
+      <label>Debit Card Rate (%): <input id="debitRate" name="debitRate" type="number" step="0.01" /></label>
 
       <label>Accepts Amex?
         <select id="acceptsAmex" name="acceptsAmex" onchange="toggleAmexField()">
@@ -130,27 +114,16 @@
       </label>
 
       <div id="amexRateContainer" style="display: none;">
-        <label>Amex Rate (%):
-          <input id="amexRate" name="amexRate" type="number" step="0.01" />
-        </label>
+        <label>Amex Rate (%): <input id="amexRate" name="amexRate" type="number" step="0.01" /></label>
       </div>
 
-      <label>Terminal Fee (£):
-        <input id="terminalFee" name="terminalFee" type="number" step="0.01" />
-      </label>
-      <label>Number of Terminals:
-        <input id="terminalCount" name="terminalCount" type="number" min="0" />
-      </label>
-      <label>Secure Fee (£):
-        <input id="secureFee" name="secureFee" type="number" step="0.01" />
-      </label>
-      <label>Other Costs (£):
-        <input id="otherCosts" name="otherCosts" type="number" step="0.01" />
-      </label>
+      <label>Terminal Fee (£): <input id="terminalFee" name="terminalFee" type="number" step="0.01" /></label>
+      <label>Number of Terminals: <input id="terminalCount" name="terminalCount" type="number" min="0" /></label>
+      <label>Secure Fee (£): <input id="secureFee" name="secureFee" type="number" step="0.01" /></label>
+      <label>Other Costs (£): <input id="otherCosts" name="otherCosts" type="number" step="0.01" /></label>
 
       <div class="button-container">
         <button type="button" onclick="calculateProcessingFees()">Calculate Processing Fees</button>
-        <button type="button" onclick="sendEmail()">Send Info</button>
         <button type="button" onclick="resetForm()">Reset Form</button>
       </div>
     </form>
@@ -205,7 +178,11 @@
         `Estimated Monthly Processing Fees: £${totalProcessingCost.toFixed(2)}`;
     }
 
-    function sendEmail() {
-      const form = document.getElementById("tcoForm");
-      const formData = new FormData(form);
-      const companyName = document
+    function resetForm() {
+      document.getElementById("tcoForm").reset();
+      document.getElementById("processingFeeResult").innerText = "";
+      document.getElementById("amexRateContainer").style.display = "none";
+    }
+  </script>
+</body>
+</html>
